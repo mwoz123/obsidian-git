@@ -1,6 +1,6 @@
 <script lang="ts">
     import { setIcon } from "obsidian";
-    import { SimpleGit } from "src/gitManager/simpleGit";
+    // import { SimpleGit } from "src/gitManager/simpleGit";
     import ObsidianGit from "src/main";
     import { LogEntry } from "src/types";
     import { onDestroy } from "svelte";
@@ -42,7 +42,7 @@
 
     async function refresh() {
         loading = true;
-        const isSimpleGit = plugin.gitManager instanceof SimpleGit;
+        const isSimpleGit = false; //plugin.gitManager instanceof SimpleGit;
         logs = await plugin.gitManager.log(
             undefined,
             false,

@@ -28,7 +28,7 @@ import {
 } from "./constants";
 import { GitManager } from "./gitManager/gitManager";
 import { IsomorphicGit } from "./gitManager/isomorphicGit";
-import { SimpleGit } from "./gitManager/simpleGit";
+// import { SimpleGit } from "./gitManager/simpleGit";
 import { openHistoryInGitHub, openLineInGitHub } from "./openInGitHub";
 import { LocalStorageSettings } from "./setting/localStorageSettings";
 import {
@@ -60,6 +60,7 @@ export default class ObsidianGit extends Plugin {
     timeoutIDPush?: number;
     timeoutIDPull?: number;
     lastPulledFiles: FileStatusResult[];
+    lastPullTimestamp: Date;
     gitReady = false;
     promiseQueue: PromiseQueue = new PromiseQueue();
     conflictOutputFile = "conflict-files-obsidian-git.md";
@@ -734,8 +735,8 @@ export default class ObsidianGit extends Plugin {
 
         try {
             if (this.useSimpleGit) {
-                this.gitManager = new SimpleGit(this);
-                await (this.gitManager as SimpleGit).setGitInstance();
+                // this.gitManager = new SimpleGit(this);
+                // await (this.gitManager as SimpleGit).setGitInstance();
             } else {
                 this.gitManager = new IsomorphicGit(this);
             }
@@ -917,17 +918,17 @@ export default class ObsidianGit extends Plugin {
             this.displayMessage("Everything is up-to-date");
         }
 
-        if (this.gitManager instanceof SimpleGit) {
-            const status = await this.gitManager.status();
-            if (status.conflicted.length > 0) {
-                this.displayError(
-                    `You have conflicts in ${status.conflicted.length} ${
-                        status.conflicted.length == 1 ? "file" : "files"
-                    }`
-                );
-                this.handleConflict(status.conflicted);
-            }
-        }
+        // if (this.gitManager instanceof SimpleGit) {
+        //     const status = await this.gitManager.status();
+        //     if (status.conflicted.length > 0) {
+        //         this.displayError(
+        //             `You have conflicts in ${status.conflicted.length} ${
+        //                 status.conflicted.length == 1 ? "file" : "files"
+        //             }`
+        //         );
+        //         this.handleConflict(status.conflicted);
+        //     }
+        // }
 
         dispatchEvent(new CustomEvent("git-refresh"));
         this.setState(PluginState.idle);
@@ -994,7 +995,8 @@ export default class ObsidianGit extends Plugin {
         let status: Status | undefined;
         let unstagedFiles: UnstagedFile[] | undefined;
 
-        if (this.gitManager instanceof SimpleGit) {
+        if (false){
+            // this.gitManager instanceof SimpleGit) {
             this.mayDeleteConflictFile();
             status = await this.updateCachedStatus();
 
@@ -1212,6 +1214,7 @@ export default class ObsidianGit extends Plugin {
             );
             this.lastPulledFiles = pulledFiles;
         }
+        this.lastPullTimestamp = new Date;
         return pulledFiles.length != 0;
     }
 

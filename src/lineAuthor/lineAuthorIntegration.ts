@@ -6,7 +6,8 @@ import {
     TFile,
     WorkspaceLeaf,
 } from "obsidian";
-import { SimpleGit } from "src/gitManager/simpleGit";
+import { IsomorphicGit } from "src/gitManager/isomorphicGit";
+// import { SimpleGit } from "src/gitManager/simpleGit";
 import {
     LineAuthorProvider,
     enabledLineAuthorInfoExtensions,
@@ -95,12 +96,12 @@ export class LineAuthoringFeature {
 
     public isAvailableOnCurrentPlatform(): {
         available: boolean;
-        gitManager: SimpleGit;
+        gitManager: IsomorphicGit //SimpleGit;
     } {
         return {
             available: this.plg.useSimpleGit && Platform.isDesktopApp,
             gitManager:
-                this.plg.gitManager instanceof SimpleGit
+                this.plg.gitManager instanceof IsomorphicGit
                     ? this.plg.gitManager
                     : undefined!,
         };

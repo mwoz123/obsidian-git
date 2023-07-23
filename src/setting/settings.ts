@@ -12,7 +12,7 @@ import {
     GIT_LINE_AUTHORING_MOVEMENT_DETECTION_MINIMAL_LENGTH,
 } from "src/constants";
 import { IsomorphicGit } from "src/gitManager/isomorphicGit";
-import { SimpleGit } from "src/gitManager/simpleGit";
+// import { SimpleGit } from "src/gitManager/simpleGit";
 import { previewColor } from "src/lineAuthor/lineAuthorProvider";
 import {
     LineAuthorDateTimeFormatOptions,
@@ -345,26 +345,26 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             containerEl.createEl("br");
             containerEl.createEl("h3", { text: "Backup" });
 
-            if (plugin.gitManager instanceof SimpleGit)
-                new Setting(containerEl)
-                    .setName("Sync Method")
-                    .setDesc(
-                        "Selects the method used for handling new changes found in your remote git repository."
-                    )
-                    .addDropdown((dropdown) => {
-                        const options: Record<SyncMethod, string> = {
-                            merge: "Merge",
-                            rebase: "Rebase",
-                            reset: "Other sync service (Only updates the HEAD without touching the working directory)",
-                        };
-                        dropdown.addOptions(options);
-                        dropdown.setValue(plugin.settings.syncMethod);
+            // if (plugin.gitManager instanceof SimpleGit)
+            //     new Setting(containerEl)
+            //         .setName("Sync Method")
+            //         .setDesc(
+            //             "Selects the method used for handling new changes found in your remote git repository."
+            //         )
+            //         .addDropdown((dropdown) => {
+            //             const options: Record<SyncMethod, string> = {
+            //                 merge: "Merge",
+            //                 rebase: "Rebase",
+            //                 reset: "Other sync service (Only updates the HEAD without touching the working directory)",
+            //             };
+            //             dropdown.addOptions(options);
+            //             dropdown.setValue(plugin.settings.syncMethod);
 
-                        dropdown.onChange(async (option: SyncMethod) => {
-                            plugin.settings.syncMethod = option;
-                            plugin.saveSettings();
-                        });
-                    });
+            //             dropdown.onChange(async (option: SyncMethod) => {
+            //                 plugin.settings.syncMethod = option;
+            //                 plugin.saveSettings();
+            //             });
+            //         });
 
             new Setting(containerEl)
                 .setName("Pull updates on startup")
@@ -402,12 +402,12 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                         })
                 );
 
-            if (plugin.gitManager instanceof SimpleGit) {
-                containerEl.createEl("br");
-                containerEl.createEl("h3", { text: "Line author information" });
+            // if (plugin.gitManager instanceof SimpleGit) {
+            //     containerEl.createEl("br");
+            //     containerEl.createEl("h3", { text: "Line author information" });
 
-                this.addLineAuthorInfoSettings();
-            }
+            //     this.addLineAuthorInfoSettings();
+            // }
         }
 
         containerEl.createEl("br");
@@ -581,87 +581,87 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
         containerEl.createEl("br");
         containerEl.createEl("h3", { text: "Advanced" });
 
-        if (plugin.gitManager instanceof SimpleGit) {
-            new Setting(containerEl)
-                .setName("Update submodules")
-                .setDesc(
-                    '"Create backup" and "pull" takes care of submodules. Missing features: Conflicted files, count of pulled/pushed/committed files. Tracking branch needs to be set for each submodule'
-                )
-                .addToggle((toggle) =>
-                    toggle
-                        .setValue(plugin.settings.updateSubmodules)
-                        .onChange((value) => {
-                            plugin.settings.updateSubmodules = value;
-                            plugin.saveSettings();
-                        })
-                );
-            if (plugin.settings.updateSubmodules) {
-                new Setting(containerEl)
-                    .setName("Submodule recurse checkout/switch")
-                    .setDesc(
-                        "Whenever a checkout happens on the root repository, recurse the checkout on the submodules (if the branches exist)."
-                    )
-                    .addToggle((toggle) =>
-                        toggle
-                            .setValue(plugin.settings.submoduleRecurseCheckout)
-                            .onChange((value) => {
-                                plugin.settings.submoduleRecurseCheckout =
-                                    value;
-                                plugin.saveSettings();
-                            })
-                    );
-            }
-        }
+        // if (plugin.gitManager instanceof SimpleGit) {
+        //     new Setting(containerEl)
+        //         .setName("Update submodules")
+        //         .setDesc(
+        //             '"Create backup" and "pull" takes care of submodules. Missing features: Conflicted files, count of pulled/pushed/committed files. Tracking branch needs to be set for each submodule'
+        //         )
+        //         .addToggle((toggle) =>
+        //             toggle
+        //                 .setValue(plugin.settings.updateSubmodules)
+        //                 .onChange((value) => {
+        //                     plugin.settings.updateSubmodules = value;
+        //                     plugin.saveSettings();
+        //                 })
+        //         );
+        //     if (plugin.settings.updateSubmodules) {
+        //         new Setting(containerEl)
+        //             .setName("Submodule recurse checkout/switch")
+        //             .setDesc(
+        //                 "Whenever a checkout happens on the root repository, recurse the checkout on the submodules (if the branches exist)."
+        //             )
+        //             .addToggle((toggle) =>
+        //                 toggle
+        //                     .setValue(plugin.settings.submoduleRecurseCheckout)
+        //                     .onChange((value) => {
+        //                         plugin.settings.submoduleRecurseCheckout =
+        //                             value;
+        //                         plugin.saveSettings();
+        //                     })
+        //             );
+        //     }
+        // }
 
-        if (plugin.gitManager instanceof SimpleGit)
-            new Setting(containerEl)
-                .setName("Custom Git binary path")
-                .addText((cb) => {
-                    cb.setValue(plugin.localStorage.getGitPath() ?? "");
-                    cb.setPlaceholder("git");
-                    cb.onChange((value) => {
-                        plugin.localStorage.setGitPath(value);
-                        plugin.gitManager.updateGitPath(value || "git");
-                    });
-                });
+        // if (plugin.gitManager instanceof SimpleGit)
+        //     new Setting(containerEl)
+        //         .setName("Custom Git binary path")
+        //         .addText((cb) => {
+        //             cb.setValue(plugin.localStorage.getGitPath() ?? "");
+        //             cb.setPlaceholder("git");
+        //             cb.onChange((value) => {
+        //                 plugin.localStorage.setGitPath(value);
+        //                 plugin.gitManager.updateGitPath(value || "git");
+        //             });
+        //         });
 
-        if (plugin.gitManager instanceof SimpleGit)
-            new Setting(containerEl)
-                .setName("Additional environment variables")
-                .setDesc(
-                    "Use each line for a new environment variable in the format KEY=VALUE"
-                )
-                .addTextArea((cb) => {
-                    cb.setPlaceholder("GIT_DIR=/path/to/git/dir");
-                    cb.setValue(plugin.localStorage.getEnvVars().join("\n"));
-                    cb.onChange((value) => {
-                        plugin.localStorage.setEnvVars(value.split("\n"));
-                    });
-                });
+        // if (plugin.gitManager instanceof SimpleGit)
+        //     new Setting(containerEl)
+        //         .setName("Additional environment variables")
+        //         .setDesc(
+        //             "Use each line for a new environment variable in the format KEY=VALUE"
+        //         )
+        //         .addTextArea((cb) => {
+        //             cb.setPlaceholder("GIT_DIR=/path/to/git/dir");
+        //             cb.setValue(plugin.localStorage.getEnvVars().join("\n"));
+        //             cb.onChange((value) => {
+        //                 plugin.localStorage.setEnvVars(value.split("\n"));
+        //             });
+        //         });
 
-        if (plugin.gitManager instanceof SimpleGit)
-            new Setting(containerEl)
-                .setName("Additional PATH environment variable paths")
-                .setDesc("Use each line for one path")
-                .addTextArea((cb) => {
-                    cb.setValue(plugin.localStorage.getPATHPaths().join("\n"));
-                    cb.onChange((value) => {
-                        plugin.localStorage.setPATHPaths(value.split("\n"));
-                    });
-                });
-        if (plugin.gitManager instanceof SimpleGit)
-            new Setting(containerEl)
-                .setName("Reload with new environment variables")
-                .setDesc(
-                    "Removing previously added environment variables will not take effect until Obsidian is restarted."
-                )
-                .addButton((cb) => {
-                    cb.setButtonText("Reload");
-                    cb.setCta();
-                    cb.onClick(() => {
-                        (plugin.gitManager as SimpleGit).setGitInstance();
-                    });
-                });
+        // if (plugin.gitManager instanceof SimpleGit)
+        //     new Setting(containerEl)
+        //         .setName("Additional PATH environment variable paths")
+        //         .setDesc("Use each line for one path")
+        //         .addTextArea((cb) => {
+        //             cb.setValue(plugin.localStorage.getPATHPaths().join("\n"));
+        //             cb.onChange((value) => {
+        //                 plugin.localStorage.setPATHPaths(value.split("\n"));
+        //             });
+        //         });
+        // if (plugin.gitManager instanceof SimpleGit)
+        //     new Setting(containerEl)
+        //         .setName("Reload with new environment variables")
+        //         .setDesc(
+        //             "Removing previously added environment variables will not take effect until Obsidian is restarted."
+        //         )
+        //         .addButton((cb) => {
+        //             cb.setButtonText("Reload");
+        //             cb.setCta();
+        //             cb.onClick(() => {
+        //                 (plugin.gitManager as SimpleGit).setGitInstance();
+        //             });
+        //         });
 
         new Setting(containerEl)
             .setName("Custom base path (Git repository path)")
